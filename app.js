@@ -30,7 +30,7 @@ app.get("/",function(req,res){
  res.render("home");
 });
 //SECRET ROUTE
-app.get("/secret",function(req,res){
+app.get("/secret",isLoggedIn,function(req,res){
   res.render("secret");
 });
 //AUTH ROUTE
@@ -61,10 +61,8 @@ app.get("/login",function(req,res){
 });
 //LOGIN LOGIC
 //MIDDLEWARE
-app.post("/login",passport.authenticate("local",
-
-{
-  successRedirect:"/secret",
+app.post("/login",passport.authenticate("local",{
+   successRedirect:"/secret",
    failureRedirect:"/login"
 }),function(req,res){
 
@@ -76,7 +74,7 @@ console.log("user logged out")
 });
 //TO CHECK WHEHER USER IS LOOGED IN OR
 function isLoggedIn(req,res,next){
-  if(req.Authenticated()){
+  if(req.isAuthenticated()){
     return next();
   }
   res.redirect("/login");
